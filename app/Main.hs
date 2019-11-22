@@ -65,4 +65,4 @@ parseArgs = execParser $ info (helper <*> commandParser)
     <> header "Header text")
 
 main :: IO ()
-main = parseArgs >>= putStrLn . show
+main = parseArgs >>= print
