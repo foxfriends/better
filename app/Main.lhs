@@ -2,6 +2,8 @@
 >
 > import Options.Applicative
 > import Data.Semigroup ((<>))
+> import Data.Maybe (maybe)
+> import System.Console.Terminal.Size
 > import Lib
 
 The `problem` subcommand is intended to present a standalone programming problem to the user.
@@ -14,7 +16,7 @@ improve their solution to the problem in the future.
 
 > data ProblemArgs = ProblemArgs
 >     { problemName :: Maybe String
->     , problemLang :: String
+>     , problemLang :: Maybe String
 >     , problemLevel :: Int
 >     } deriving (Show)
 > 
@@ -25,11 +27,11 @@ improve their solution to the problem in the future.
 >         <> short 'n'
 >         <> metavar "<name>"
 >         <> help "The name of a problem to try"))
->     <*> strOption
+>     <*> optional (strOption
 >         (  long "language"
 >         <> short 'l'
 >         <> metavar "<lang>"
->         <> help "The programming language you will write the solution in")
+>         <> help "The programming language you will write the solution in"))
 >     <*> option auto
 >         (  long "level"
 >         <> short 'v'
@@ -48,7 +50,7 @@ the material and the exercises at any time in the future.
 
 > data ConceptArgs = ConceptArgs
 >     { conceptName :: String
->     , conceptLang :: String
+>     , conceptLang :: Maybe String
 >     } deriving (Show)
 > 
 > conceptArgs :: Parser ConceptArgs
@@ -56,11 +58,11 @@ the material and the exercises at any time in the future.
 >     <$> argument auto
 >         (  metavar "<problem-name>"
 >         <> help "The name of a problem to try")
->     <*> strOption
+>     <*> optional (strOption
 >         (  long "language"
 >         <> short 'l'
 >         <> metavar "<lang>"
->         <> help "The programming language you are learning the concept for")
+>         <> help "The programming language you are learning the concept for"))
 
 We combine the `problem` and `concept` args parsers here, adding too the `tutorial` command which will
 give a user who is brand new to development a full tutorial on how to use the command line, and in particular
@@ -80,10 +82,12 @@ how to use the `better` application to explore the world of programming further.
 >     )
 > 
 > parseArgs :: IO Command
-> parseArgs = execParser $ info (helper <*> commandParser)
->     (fullDesc
->     <> progDesc "Help yourself to become a better programmer"
->     <> header "Header text")
-> 
+> parseArgs = do
+>     terminalWidth <- maybe 80 width <$> size
+>     let preferences = prefs (showHelpOnEmpty <> showHelpOnError <> columns (min terminalWidth 100)) in
+>       customExecParser preferences $ info (helper <*> commandParser)
+>         (  fullDesc
+>         <> header "Help yourself to become a better programmer")
+>
 > main :: IO ()
 > main = parseArgs >>= print

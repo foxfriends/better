@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 5ca1fcebb7b2ddb44973aa5e4ffc00c998aee403840006d50dfc177a28fb7804
+-- hash: c3bf67e16ce6c1a3562f942c2ab73f35db206ecef52512a1d92a0ab8b139c540
 
 name:           better-lib
 version:        0.1.0.0
@@ -34,6 +34,7 @@ library
   build-depends:
       base >=4.7 && <5
     , optparse-applicative >=0.14.3.0 && <0.15
+    , terminal-size >=0.3.2.1 && <0.3.3
   default-language: Haskell2010
 
 executable better
@@ -47,6 +48,7 @@ executable better
       base >=4.7 && <5
     , better-lib
     , optparse-applicative >=0.14.3.0 && <0.15
+    , terminal-size >=0.3.2.1 && <0.3.3
   default-language: Haskell2010
 
 test-suite better-test
@@ -61,4 +63,5 @@ test-suite better-test
       base >=4.7 && <5
     , better-lib
     , optparse-applicative >=0.14.3.0 && <0.15
+    , terminal-size >=0.3.2.1 && <0.3.3
   default-language: Haskell2010
