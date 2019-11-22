@@ -1,0 +1,64 @@
+cabal-version: 1.12
+
+-- This file has been generated from package.yaml by hpack version 0.31.2.
+--
+-- see: https://github.com/sol/hpack
+--
+-- hash: 97d6427d26ba7fb51c6b1aa3bea014ad77cd26ea0bc0b65121d3ce01251c055f
+
+name:           better-lib
+version:        0.1.0.0
+description:    Please see the README on GitHub at <https://github.com/foxfriends/better#readme>
+homepage:       https://github.com/foxfriends/better#readme
+bug-reports:    https://github.com/foxfriends/better/issues
+author:         Cameron Eldridge
+maintainer:     cameldridge+git@gmail.com
+copyright:      2019 Cameron Eldridge
+license:        BSD3
+license-file:   LICENSE
+build-type:     Simple
+extra-source-files:
+    README.md
+
+source-repository head
+  type: git
+  location: https://github.com/foxfriends/better
+
+library
+  exposed-modules:
+      Lib
+  other-modules:
+      Paths_better_lib
+  hs-source-dirs:
+      src
+  build-depends:
+      base >=4.7 && <5
+    , optparse-applicative >=0.14.3.0 && <0.15
+  default-language: Haskell2010
+
+executable better
+  main-is: Main.hs
+  other-modules:
+      Paths_better_lib
+  hs-source-dirs:
+      app
+  ghc-options: -threaded -rtsopts -with-rtsopts=-N
+  build-depends:
+      base >=4.7 && <5
+    , better-lib
+    , optparse-applicative >=0.14.3.0 && <0.15
+  default-language: Haskell2010
+
+test-suite better-test
+  type: exitcode-stdio-1.0
+  main-is: Spec.hs
+  other-modules:
+      Paths_better_lib
+  hs-source-dirs:
+      test
+  ghc-options: -threaded -rtsopts -with-rtsopts=-N
+  build-depends:
+      base >=4.7 && <5
+    , better-lib
+    , optparse-applicative >=0.14.3.0 && <0.15
+  default-language: Haskell2010
