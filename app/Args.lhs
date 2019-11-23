@@ -1,10 +1,15 @@
-> module Main where
+> module Args
+>     ( Command (..)
+>     , TutorialArgs
+>     , ProblemArgs
+>     , ConceptArgs
+>     , ProjectArgs
+>     , parseArgs ) where
 >
 > import Options.Applicative
 > import Data.Semigroup ((<>))
 > import Data.Maybe (maybe)
 > import System.Console.Terminal.Size
-> import Lib
 
 The `tutorial` subcommand provides the user with a short and simple tutorial style lesson. A Tutorial
 tends to cover a broader range of content, but in less detail than a Concept should. Tutorials also
@@ -158,24 +163,3 @@ in the `main` function.
 >       customExecParser preferences $ info (helper <*> commandParser)
 >         (  fullDesc
 >         <> header "Help yourself to become a better programmer")
->
-> main :: IO ()
-> main = do
->     args <- parseArgs
->     case args of
->         Tutorial args -> tutorial args
->         Problem args -> problem args
->         Concept args -> concept args
->         Project args -> project args
->
-> tutorial :: TutorialArgs -> IO ()
-> tutorial _ = putStrLn "Tutorial"
->
-> problem :: ProblemArgs -> IO ()
-> problem _ = putStrLn "Problem"
->
-> concept :: ConceptArgs -> IO ()
-> concept _ = putStrLn "Concept"
-> 
-> project :: ProjectArgs -> IO ()
-> project _ = putStrLn "Project"

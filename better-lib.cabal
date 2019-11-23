@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: c3bf67e16ce6c1a3562f942c2ab73f35db206ecef52512a1d92a0ab8b139c540
+-- hash: 9ef6b46fad3b703c45c1ae5bccd8bf6d40d25c06a02b225a4dff2f479d1974e4
 
 name:           better-lib
 version:        0.1.0.0
@@ -38,8 +38,13 @@ library
   default-language: Haskell2010
 
 executable better
-  main-is: Main.lhs
+  main-is: Main.hs
   other-modules:
+      Args
+      Commands.Concept
+      Commands.Problem
+      Commands.Project
+      Commands.Tutorial
       Paths_better_lib
   hs-source-dirs:
       app
