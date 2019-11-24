@@ -20,17 +20,16 @@ A Tutorial does not leave any data on the user's device, instead just running th
 would be sufficient to review the entire experience.
 
 > data TutorialArgs = TutorialArgs
->     { tutorialName :: Maybe String
+>     { tutorialName :: String
 >     , tutorialSearch :: Bool
 >     } deriving (Show)
 >     
 > tutorialArgs :: Parser TutorialArgs
 > tutorialArgs = TutorialArgs
->     <$> optional (strOption
->         (  long "name"
->         <> short 'n'
->         <> metavar "<name>"
->         <> help "The name of the tutorial"))
+>     <$> argument str
+>         (  metavar "<something>"
+>         <> value "something"
+>         <> help "What you want to learn. \"learn something\" and we'll pick for you.")
 >     <*> switch 
 >         (  long "search"
 >         <> short 's'
@@ -45,7 +44,7 @@ same Problem in another language should add another solution to their existing d
 user may look back on and improve their solution to the problem in the future.
 
 > data ProblemArgs = ProblemArgs
->     { problemName :: Maybe String
+>     { problemName :: String
 >     , problemConcepts :: [String]
 >     , problemLang :: Maybe String
 >     , problemLevel :: Int
@@ -54,9 +53,10 @@ user may look back on and improve their solution to the problem in the future.
 >
 > problemArgs :: Parser ProblemArgs
 > problemArgs = ProblemArgs
->     <$> optional (argument str
->         (  metavar "<name>"
->         <> help "The name of a specific problem to attempt"))
+>     <$> argument str
+>         (  metavar "<something>"
+>         <> value "something"
+>         <> help "What you want to practice. \"practice something\" and we'll pick for you.")
 >     <*> many (strOption
 >         (  long "concept"
 >         <> short 'c'
@@ -88,16 +88,17 @@ exercise in a well organized directory in the concepts root directory. They shou
 the material and the exercises at any time in the future.
 
 > data ConceptArgs = ConceptArgs
->     { conceptName :: Maybe String
+>     { conceptName :: String
 >     , conceptLang :: Maybe String
 >     , conceptSearch :: Bool
 >     } deriving (Show)
 >
 > conceptArgs :: Parser ConceptArgs
 > conceptArgs = ConceptArgs
->     <$> optional (argument str
->         (  metavar "<name>"
->         <> help "The name of a specific concept to learn"))
+>     <$> argument str
+>         (  metavar "<something>"
+>         <> value "something"
+>         <> help "What you want to learn. \"at something\" and we'll pick for you.")
 >     <*> optional (strOption
 >         (  long "language"
 >         <> short 'l'
@@ -118,16 +119,17 @@ that matches said specification. They should be able to return to the Project an
 or even just use the working application for its purpose, as it should probably be somewhat practical.
 
 > data ProjectArgs = ProjectArgs
->     { projectName :: Maybe String
+>     { projectName :: String
 >     , projectConcepts :: [String]
 >     , projectSearch :: Bool
 >     } deriving (Show)
 > 
 > projectArgs :: Parser ProjectArgs
 > projectArgs = ProjectArgs
->     <$> optional (argument str
->         (  metavar "<name>"
->         <> help "The name of a specific project to build"))
+>     <$> argument str
+>         (  metavar "<something>"
+>         <> value "something"
+>         <> help "What you want to make. \"make something\" and we'll pick for you.")
 >     <*> many (strOption
 >         (  long "concept"
 >         <> short 'c'
@@ -150,10 +152,10 @@ in the `main` function.
 >
 > commandParser :: Parser Command
 > commandParser = hsubparser
->     ( command "tutorial" (info (Tutorial <$> tutorialArgs) (progDesc "Go through a tutorial to get a brief overview on a topic"))
->    <> command "problem" (info (Problem <$> problemArgs) (progDesc "Start a coding problem to test your skills"))
->    <> command "concept" (info (Concept <$> conceptArgs) (progDesc "Learn a new concept"))
->    <> command "project" (info (Project <$> projectArgs) (progDesc "Start a project to practice combining a few concepts"))
+>     ( command "learn" (info (Tutorial <$> tutorialArgs) (progDesc "You had better learn something quickly"))
+>    <> command "practice" (info (Problem <$> problemArgs) (progDesc "You had better practice up on some skills"))
+>    <> command "at" (info (Concept <$> conceptArgs) (progDesc "You should get better at something in particular"))
+>    <> command "make" (info (Project <$> projectArgs) (progDesc "You had better make something useful"))
 >     )
 >
 > parseArgs :: IO Command
