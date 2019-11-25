@@ -1,9 +1,9 @@
 > module Args
 >     ( Command (..)
->     , TutorialArgs
->     , ProblemArgs
->     , ConceptArgs
->     , ProjectArgs
+>     , TutorialArgs (..)
+>     , ProblemArgs (..)
+>     , ConceptArgs (..)
+>     , ProjectArgs (..)
 >     , parseArgs ) where
 >
 > import Options.Applicative
