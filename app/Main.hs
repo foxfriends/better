@@ -1,4 +1,5 @@
 module Main where
+    import System.IO
     import Args
     import Commands.Concept
     import Commands.Problem
@@ -8,8 +9,11 @@ module Main where
     main :: IO ()
     main = do
         args <- parseArgs
-        case args of
+        result <- case args of
             Tutorial args -> tutorial args
             Problem args -> problem args
             Concept args -> concept args
             Project args -> project args
+        case result of
+            Left problem -> hPutStrLn stderr problem
+            Right () -> return ()

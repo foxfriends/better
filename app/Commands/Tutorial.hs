@@ -1,12 +1,22 @@
 module Commands.Tutorial (tutorial) where
-    import Repo (tutorialsRepo)
+    import Control.Monad
+    import Data.Maybe
+
     import qualified Lib.Repo as Repo
+    import qualified Lib.Tutorial as Tutorial
+
+    import Repo (tutorialsRepo)
     import Args (TutorialArgs (..))
 
-    tutorial :: TutorialArgs -> IO ()
-    tutorial (TutorialArgs "something" _) = putStrLn "Topic suggestion not yet implemented"
-    tutorial (TutorialArgs _ True) = putStrLn "Search not yet implemented"
+    tutorial :: TutorialArgs -> IO (Either String ())
+    tutorial (TutorialArgs "something" _) = return $ Left "Topic suggestion not yet implemented"
+    tutorial (TutorialArgs _ True) = return $ Left "Search not yet implemented"
     tutorial (TutorialArgs name _) = do
-        Just repo <- tutorialsRepo
-        tutorial <- Repo.lookup name repo
-        print tutorial
+        repo <- tutorialsRepo
+        tutorialPath <- ioEitherMap (fmap (maybe notFoundError Right) . Repo.lookup name) repo
+        tutorialSpec <- ioEitherMap Tutorial.spec tutorialPath
+        print tutorialSpec
+        return $ Right ()
+        where
+            notFoundError = Left $ "No Tutorial named " ++ name ++ " was found. Maybe you should try writing it!"
+            ioEitherMap = either (return . Left)
